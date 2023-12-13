@@ -52,6 +52,26 @@ public class ProductController {
       }
    }
 
+   @PostMapping("/products")
+   public ResponseEntity<?> save(@RequestBody ProductRequest productRequest){
+      try {
+         ProductDto productDto = productService.save(productRequest);
+         return new ResponseEntity<>(
+             MessageResponse.builder()
+                 .body(productDto)
+                 .build()
+             , HttpStatus.OK
+         );
+      } catch (ElementNoExistsInDB e) {
+         return new ResponseEntity<>(
+             MessageResponse.builder()
+                 .message(e.getMessage())
+                 .build()
+             , HttpStatus.OK
+         );
+      }
+   }
+
    @PutMapping("/products/{id}")
    public ResponseEntity<?> update(
        @PathVariable Integer id, @RequestBody ProductRequest productRequest){

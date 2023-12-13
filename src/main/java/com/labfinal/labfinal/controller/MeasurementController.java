@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(name = "/api/v1")
+@RequestMapping("/api/v1")
 public class MeasurementController {
 
    private final MeasurementService measurementService;
@@ -50,6 +50,17 @@ public class MeasurementController {
              , HttpStatus.OK
          );
       }
+   }
+
+   @PostMapping("/measurements")
+   public ResponseEntity<?> save(@RequestBody MeasurementRequest measurementRequest){
+      MeasurementDto measurementDto = measurementService.save(measurementRequest);
+      return new ResponseEntity<>(
+          MessageResponse.builder()
+              .body(measurementDto)
+              .build()
+          , HttpStatus.OK
+      );
    }
 
    @PutMapping("/measurements/{id}")
